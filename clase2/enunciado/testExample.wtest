@@ -16,6 +16,15 @@ Tiene los mismos pero con not
 
 // TESTS PEPE DESARROLLADOR CON BONO DE PRESENTISMO NULO, VARIANDO BONOS DE RESULTADO
 
+
+/*
+
+test "bono presentismo por faltas con faltas > 1" {
+    assert.equals(valor, bonoPorPresentismoPorFaltas.sueldo(pepe))
+}
+
+*/
+
 test "Cuando pepe es desarrollador, tiene bono presentismo nulo y bono por resultado sti" {
     pepe.puesto(desarrollador)
     pepe.bonoPresentismo(bonoPorPresentismoNulo)

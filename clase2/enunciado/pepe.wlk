@@ -82,7 +82,7 @@ object bonoPorPresentismoNulo {
 }
 
 object bonoPorPresentismoPorFaltas {
-
+sueldo
     method sueldo(unEmpleado) {
         if (unEmpleado.faltas() == 0) {
             return 100
