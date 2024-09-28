@@ -1,0 +1,15 @@
+import drCasaT1.*
+
+test "Frank contrae una malaria que amenaza 800 de sus celulas" {
+  frank.contraerEnfermedad(malariaPremiun)
+  assert.equals([malariaPremiun], frank.enfermedades())
+}
+
+test "La malaria contraída por Logan se duplica" {
+  malaria.duplicarCelulasAmenazadas()
+  assert.equals(1000, malaria.cantidadCelulasAmenazadas())
+}
+
+test "Logan vivirá un día en su vida" {
+  
+}
