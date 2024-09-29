@@ -11,5 +11,19 @@ test "La malaria contraída por Logan se duplica" {
 }
 
 test "Logan vivirá un día en su vida" {
-  
+  malaria.cantidadCelulasAmenazadas(500)
+  logan.vivirUnDia()
+  assert.equals(0, logan.celulasAfectadasAgresivamente())
+  assert.equals(lupus, logan.enfermedadQueMasAfecta())
+  assert.equals(false, logan.estaEnComa())
+  lupus
+}
+
+test "Logan vivirá un mes (y el ultimo) de su vida" {
+  malaria.cantidadCelulasAmenazadas(500)
+  otitis.cantidadCelulasAmenazadas(100)
+  31.times({ _numero => logan.vivirUnDia() })
+  assert.equals(1288490198800, logan.celulasAfectadasAgresivamente()) // No se si debe dar esto, imagino que si porque se duplica 31 veces la cantidad de celulas
+  assert.equals(malaria, logan.enfermedadQueMasAfecta())
+  assert.equals(true, logan.estaEnComa())
 }
