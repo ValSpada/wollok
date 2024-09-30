@@ -1,69 +1,46 @@
 class EnfermedadInfecciosa {
   var cantidadCelulasAmenazadas
-  var clasificacion = "no agresiva"
   
   method efectoDeLaEnfermedad(unaPersona) {
     unaPersona.aumentarTemperatura(cantidadCelulasAmenazadas / 1000)
     self.duplicarCelulasAmenazadas()
-    self.verificarClasificacion(unaPersona)
   }
   
   method duplicarCelulasAmenazadas() {
     cantidadCelulasAmenazadas = cantidadCelulasAmenazadas * 2
   }
   
-  method verificarClasificacion(unaPersona) {
-    if (cantidadCelulasAmenazadas > (unaPersona.celulas() * 0.1)) {
-      clasificacion = "agresiva"
-    } else {
-      clasificacion = "no agresiva"
-    }
-  }
+  method esAgresiva(unaPersona) = cantidadCelulasAmenazadas > (unaPersona.celulas() * 0.1)
   
   method cantidadCelulasAmenazadas() = cantidadCelulasAmenazadas
   
   method cantidadCelulasAmenazadas(cantidad) {
     cantidadCelulasAmenazadas = cantidad
   }
-  
-  method clasificacion() = clasificacion
 }
 
 class EnfermedadAutoinmune {
   var cantidadCelulasAmenazadas
-  var clasificacion = "no agresiva"
   var cantidadEfectosProducidos = 0
   
   method efectoDeLaEnfermedad(unaPersona) {
     unaPersona.celulasDestruidas(cantidadCelulasAmenazadas)
     cantidadEfectosProducidos = cantidadEfectosProducidos + 1
-    self.verificarClasificacion()
   }
   
-  method verificarClasificacion() {
-    if (cantidadEfectosProducidos > 30) {
-      clasificacion = "agresiva"
-    } else {
-      clasificacion = "no agresiva"
-    }
-  }
+  method esAgresiva(_unaPersona) = cantidadEfectosProducidos > 30
   
   method cantidadCelulasAmenazadas() = cantidadCelulasAmenazadas
   
   method cantidadCelulasAmenazadas(cantidad) {
     cantidadCelulasAmenazadas = cantidad
   }
-  
-  method clasificacion() = clasificacion
-  
-  method cantidadEfectosProducidos() = cantidadEfectosProducidos
 }
 
 class Persona {
   var temperatura = 36
   var celulas
   var enfermedades
-  var enfermedadesAgresivas = []
   
   method aumentarTemperatura(aumento) {
     if (temperatura < 45) {
@@ -88,7 +65,7 @@ class Persona {
   }
   
   method celulasAfectadasAgresivamente() {
-    enfermedadesAgresivas = enfermedades.filter({ enfermedad => enfermedad.clasificacion() == "agresiva" })
+    var enfermedadesAgresivas = enfermedades.filter({ enfermedad => enfermedad.esAgresiva(self) })
     return enfermedadesAgresivas.sum({ enfermedad => enfermedad.cantidadCelulasAmenazadas() })
   }
   
