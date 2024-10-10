@@ -1,47 +1,36 @@
-/*
+import enfermedad.*
+import jefeDeDepartamento.*
+import medico.*
 
-CLASE 
-
-*/
-
-
-
-class EnfermedadInfecciosa {
-  var cantidadCelulasAmenazadas
-  
-  method efectoDeLaEnfermedad(unaPersona) {
+// HERENCIA -> inherits (Hereda comportamientos de la clase padre) -> Tuvimos COMPORTAMIENTO REPETIDO, cosificamos
+// Relacion estatica, EnfermedadInfecciosa ES UNA Enfermedad
+// En cambio una relacion dinamica, como las Personas con Enfermedades
+// Interfaz = Tipo
+class EnfermedadInfecciosa inherits Enfermedad {
+  override method afectar(unaPersona) {
     unaPersona.aumentarTemperatura(cantidadCelulasAmenazadas / 1000)
-    self.duplicarCelulasAmenazadas()
   }
   
   method duplicarCelulasAmenazadas() {
-    cantidadCelulasAmenazadas = cantidadCelulasAmenazadas * 2
+    cantidadCelulasAmenazadas *= 2
   }
   
   method esAgresiva(unaPersona) = cantidadCelulasAmenazadas > (unaPersona.celulas() * 0.1)
-  
-  method cantidadCelulasAmenazadas() = cantidadCelulasAmenazadas
-  
-  method cantidadCelulasAmenazadas(cantidad) {
-    cantidadCelulasAmenazadas = cantidad
-  }
 }
 
-class EnfermedadAutoinmune {
-  var cantidadCelulasAmenazadas
+class EnfermedadAutoinmune inherits Enfermedad {
   var cantidadEfectosProducidos = 0
   
-  method efectoDeLaEnfermedad(unaPersona) {
+  override method afectar(unaPersona) {
     unaPersona.celulasDestruidas(cantidadCelulasAmenazadas)
-    cantidadEfectosProducidos = cantidadEfectosProducidos + 1
+    self.aumentarVecesQueAfecto()
   }
   
   method esAgresiva(_unaPersona) = cantidadEfectosProducidos > 30
   
-  method cantidadCelulasAmenazadas() = cantidadCelulasAmenazadas
-  
-  method cantidadCelulasAmenazadas(cantidad) {
-    cantidadCelulasAmenazadas = cantidad
+  method aumentarVecesQueAfecto() {
+    cantidadEfectosProducidos += 1
+    // DELEGAR PARA MANTENER COHESION
   }
 }
 
@@ -51,15 +40,11 @@ class Persona {
   var enfermedades
   
   method aumentarTemperatura(aumento) {
-    if (temperatura < 45) {
-      temperatura = temperatura + aumento
-    } else {
-      temperatura = 45
-    }
+    temperatura = 45.min(temperatura + aumento)
   }
   
   method celulasDestruidas(cantidadCelulas) {
-    celulas = celulas - cantidadCelulas
+    celulas -= cantidadCelulas
   }
   
   method estaEnComa() = (temperatura == 45) || (celulas < 1000000)
@@ -69,7 +54,7 @@ class Persona {
   }
   
   method vivirUnDia() {
-    enfermedades.map({ enfermedad => enfermedad.efectoDeLaEnfermedad(self) })
+    enfermedades.forEach({ enfermedad => enfermedad.afectar(self) })
   }
   
   method celulasAfectadasAgresivamente() {
@@ -80,6 +65,23 @@ class Persona {
   method enfermedadQueMasAfecta() {
     enfermedades.sortBy({ enfermedad1, enfermedad2 => enfermedad1.cantidadCelulasAmenazadas() > enfermedad2.cantidadCelulasAmenazadas() })
     return enfermedades.first()
+  }
+  
+  method recibirMedicamento(unaDosis) {
+    self.aplicarDosis(unaDosis)
+    self.removerCuradas()
+  }
+  
+  method aplicarDosis(unaDosis) {
+    enfermedades.forEach({ enfermedad => enfermedad.atenuarse(unaDosis * 15) })
+  }
+  
+  method removerCuradas() {
+    enfermedades.removeALlSuchThat({ enfermedad => enfermedad.estaCurada() })
+  }
+  
+  method tiene(unaEnfermedad) {
+    enfermedades.contains(unaEnfermedad)
   }
   
   method enfermedades() = enfermedades
@@ -96,15 +98,3 @@ class Persona {
     temperatura = valor
   }
 }
-
-const malaria = new EnfermedadInfecciosa(cantidadCelulasAmenazadas = 500)
-
-const otitis = new EnfermedadInfecciosa(cantidadCelulasAmenazadas = 100)
-
-const lupus = new EnfermedadAutoinmune(cantidadCelulasAmenazadas = 10000)
-
-const malariaPremiun = new EnfermedadInfecciosa(cantidadCelulasAmenazadas = 800)
-
-const logan = new Persona(celulas = 3000000, enfermedades = [malaria, otitis, lupus])
-
-const frank = new Persona(celulas = 3500000, enfermedades = [])

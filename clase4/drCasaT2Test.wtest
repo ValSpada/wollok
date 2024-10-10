@@ -1,0 +1,103 @@
+import drCasaT2.*
+
+// Test Driven DEvelopment -> Crear los test y despues desarrollar
+// Fixturing de test -> DESCRIBE -> AGRUPA TESTS
+// Crear parametros de inicialización
+describe "Dr Casa - Temporada 1" {
+  const malaria = new EnfermedadInfecciosa(cantidadCelulasAmenazadas = 500)
+  const otitis = new EnfermedadInfecciosa(cantidadCelulasAmenazadas = 100)
+  const lupus = new EnfermedadAutoinmune(cantidadCelulasAmenazadas = 10000)
+  const malariaPremiun = new EnfermedadInfecciosa(cantidadCelulasAmenazadas = 800)
+  const logan = new Persona(celulas = 3000000, enfermedades = [malaria, otitis, lupus])
+  const frank = new Persona(celulas = 3500000, enfermedades = [])
+  
+  test "1. Frank contrae una malaria que amenaza 800 de sus celulas" {
+    frank.contraerEnfermedad(malariaPremiun)
+    assert.equals([malariaPremiun], frank.enfermedades())
+  }
+  
+  test "2. La malaria contraída por Logan se duplica" {
+    malaria.duplicarCelulasAmenazadas()
+    assert.equals(1000, malaria.cantidadCelulasAmenazadas())
+  }
+  
+  /* CADA TEST DEBE SER INDEPENDIENTE, SI FALLA UNO CORTA EL TEST
+  test "3. Logan vivirá un día en su vida" {
+  malaria.cantidadCelulasAmenazadas(500)
+  logan.vivirUnDia()
+  assert.equals(0, logan.celulasAfectadasAgresivamente())
+  assert.equals(lupus, logan.enfermedadQueMasAfecta())
+  assert.equals(false, logan.estaEnComa())
+  }
+  */
+  test "3. a. Logan vive un día y aumenta las celulas afectadas" {
+    logan.vivirUnDia()
+    assert.equals(0, logan.celulasAfectadasAgresivamente())
+  }
+  
+  test "3. b. Logan vive un día" {
+    logan.vivirUnDia()
+    assert.equals(lupus, logan.enfermedadQueMasAfecta())
+  }
+  
+  test "3. c. Logan vive un día" {
+    logan.vivirUnDia()
+    assert.equals(false, logan.estaEnComa())
+  }
+  
+  test "4. a. Logan vivirá un mes (y el ultimo) de su vida" {
+    31.times({ _numero => logan.vivirUnDia() })
+    assert.equals(10000, logan.celulasAfectadasAgresivamente())
+  }
+  
+  test "4. b. " {
+    31.times({ _numero => logan.vivirUnDia() })
+    assert.equals(malaria, logan.enfermedadQueMasAfecta())
+  }
+  
+  test "4. c. " {
+    31.times({ _numero => logan.vivirUnDia() })
+    assert.equals(true, logan.estaEnComa())
+  }
+} // DR CASA TEMPORADA 2
+
+describe "Dr Casa - Temporada 2" {
+  const malaria = new EnfermedadInfecciosa(cantidadCelulasAmenazadas = 500)
+  const otitis = new EnfermedadInfecciosa(cantidadCelulasAmenazadas = 100)
+  const lupus = new EnfermedadAutoinmune(cantidadCelulasAmenazadas = 10000)
+  const malariaPremiun = new EnfermedadInfecciosa(cantidadCelulasAmenazadas = 800)
+  const logan = new Persona(celulas = 3000000, enfermedades = [malaria, otitis, lupus])
+  const frank = new Persona(celulas = 3500000, enfermedades = [])
+  const cameron = new Medico(dosis = 10)
+  const house = new JefeDeDepartamento()
+
+  test "1. Una enfermedad infecciosa se atenua bien" {
+    malaria.atenuarse(100)
+    assert.equals(400, malaria.cantidadCelulasAmenazadas())
+  }
+  
+  test "1. Una enfermedad autoinmune se atenua bien" {
+    malaria.lupus(500)
+    assert.equals(9500, malaria.cantidadCelulasAmenazadas())
+  }
+  
+  test "2. Cameron atiende a Logan y atenua una enfermedad infecciosa" {
+    cameron.atenderA(logan)
+    assert.equals(350, malaria.cantidadCelulasAmenazadas())
+  }
+  
+  test "2. Cameron atiende a Logan y cura la otitis" {
+    cameron.atenderA(logan)
+    assert.notThat(logan.tiene(otitis))
+  }
+
+  test "2. Cameron atiende a Logan y atenua una enfermedad autoinmune" {
+    cameron.atenderA(logan)
+    assert.equals(9850, lupus.cantidadCelulasAmenazadas())
+  }
+  
+  test "3. Jefe de departamento atiende a una persona" {
+
+    house.atenderA(cameron)
+  }
+}
