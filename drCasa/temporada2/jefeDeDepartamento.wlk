@@ -1,6 +1,6 @@
-import medico.*
+import drCasaT2.*
 
-class JefeDeDepartamento inherits Medico {
+class JefeDeDepartamento inherits Persona {
   const subordinados = #{}
   
   method atenderA(unaPersona) {

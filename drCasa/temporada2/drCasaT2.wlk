@@ -41,7 +41,7 @@ class Persona {
   method bajarTodaTemperatura() {
     temperatura = 0
   }
-
+  
   method celulasDestruidas(cantidadCelulas) {
     celulas -= cantidadCelulas
   }
@@ -76,12 +76,10 @@ class Persona {
   }
   
   method removerCuradas() {
-    enfermedades.removeALlSuchThat({ enfermedad => enfermedad.estaCurada() })
+    enfermedades.removeAllSuchThat({ enfermedad => enfermedad.estaCurada() })
   }
   
-  method tiene(unaEnfermedad) {
-    enfermedades.contains(unaEnfermedad)
-  }
+  method tiene(unaEnfermedad) = enfermedades.contains(unaEnfermedad)
   
   method enfermedades() = enfermedades
   
@@ -98,15 +96,14 @@ class Persona {
   }
 }
 
-object laMuerte inherits Enfermedad(cantidadCelulasAmenazadas = 0) {
-  
+object laMuerte inherits Enfermedad (cantidadCelulasAmenazadas = 0) {
   override method afectar(unaPersona) {
     unaPersona.bajarTodaTemperatura()
   }
-
+  
   override method atenuarse(_cantidad) {
+    
   }
-
+  
   method esAgresiva(_unaPersona) = true
-
 }

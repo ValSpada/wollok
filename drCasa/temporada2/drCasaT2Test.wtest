@@ -58,8 +58,8 @@ describe "Dr Casa - Temporada 2" {
   const malariaPremiun = new EnfermedadInfecciosa(cantidadCelulasAmenazadas = 800)
   const logan = new Persona(celulas = 3000000, enfermedades = [malaria, otitis, lupus])
   const frank = new Persona(celulas = 3500000, enfermedades = [])
-  const cameron = new Medico(dosis = 10, enfermedades = [lupus], celulas = 2000000)
-  const house = new JefeDeDepartamento(subordinados = #{cameron}, enfermedades = [], celulas = 2000000, dosis = 0)
+  const cameron = new Medico(celulas = 2000000, enfermedades = [lupus], dosis = 10)
+  const house = new JefeDeDepartamento(subordinados = #{cameron}, enfermedades = [], celulas = 2000000)
   
   test "1. Una enfermedad infecciosa se atenua bien" {
     malaria.atenuarse(100)
@@ -67,8 +67,8 @@ describe "Dr Casa - Temporada 2" {
   }
   
   test "1. Una enfermedad autoinmune se atenua bien" {
-    malaria.lupus(500)
-    assert.equals(9500, malaria.cantidadCelulasAmenazadas())
+    lupus.atenuarse(500)
+    assert.equals(9500, lupus.cantidadCelulasAmenazadas())
   }
   
   test "2. Cameron atiende a Logan y atenua una enfermedad infecciosa" {
@@ -98,9 +98,9 @@ describe "Dr Casa - Temporada 2" {
   
   test "4. b. Un Jefe de Departamento contrae Malaria" {
     house.contraerEnfermedad(malaria)
-    assert.equals(350, malaria.cantidadCelulasAmenazadas())
+    assert.equals(500, malaria.cantidadCelulasAmenazadas())
   }
-
+  
   test "5. Un Jefe de Departamento contrae La Muerte" {
     house.contraerEnfermedad(laMuerte)
     assert.equals([laMuerte], house.enfermedades())
