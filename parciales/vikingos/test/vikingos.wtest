@@ -1,1 +1,10 @@
-test ""
+import src.vikingo.*
+
+describe "Tests del parcial" {
+
+    jorge = new Granjero()
+
+    test "Un Vikingo intenta subir a una expedicion pero no puede" {
+        assert.throwsException({ jorge.subir(expedicion1) })
+    }
+}
