@@ -1,7 +1,9 @@
-import vikingo
+import vikingo.*
+import objetivos.*
 
 class Expedicion {
   var vikingos = []
+  var objetivosInvolucrados = []
   
   method subirAUnVikingo(unVikingo) {
     self.esProductivo(unVikingo)
@@ -17,8 +19,17 @@ class Expedicion {
   }
   
   method esJarlYNoTieneArmas(unVikingo) {
-    if (unVikingo.esDeCasta(jarl) && (!unVikingo.tieneArmas())) {
+    if (unVikingo.esDeCasta(jarl) && unVikingo.tieneArmas()) {
       throw new Exception(message = "El vikingo es un Jarl con armas")
     }
   }
+  
+  /*********************************************************************/
+  method valeLaPena() = objetivosInvolucrados.all({ objetivo => objetivo.valeLaPena(vikingos.size()) })
+  
+  method invadirTierras() = objetivosInvolucrados.forEach({ objetivo => objetivo.serInvadido(vikingos.size(), self) })
+
+  method contabilizarVidas() = vikingos.forEach { vikingo => vikingo.cobrarUnaVida() }
+
+  method repartirBotin(unBotin) = vikingos.forEach { vikingo => vikingo.recibirBotin(unBotin / vikingos.size()) }
 }

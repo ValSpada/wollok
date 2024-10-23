@@ -1,10 +1,35 @@
 import src.vikingo.*
+import src.expediciones.*
+import src.objetivos.*
 
 describe "Tests del parcial" {
-
-    jorge = new Granjero()
-
-    test "Un Vikingo intenta subir a una expedicion pero no puede" {
-        assert.throwsException({ jorge.subir(expedicion1) })
-    }
+  const jorge = new Soldado(casta = jarl)
+  const ragnar = new Soldado(casta = karl, vidasCobradas = 25, cantidadDeArmas = 2)
+  const expedicion1 = new Expedicion()
+  const expedicion2 = new Expedicion(objetivosInvolucrados = [aldea1, capital1], vikingos = [ragnar])
+  const aldea1 = new Aldea(iglesias = [iglesia1])
+  const iglesia1 = new Iglesia(cantidadCrucifijos = 15)
+  const capital1 = new Capital(cantidadDefensores = 3, factorDeRiqueza = 3)
+  
+  test "Un Vikingo intenta subir a una expedicion pero no puede" {
+    assert.throwsException({ jorge.subir(expedicion1) })
+  }
+  
+  test "Vale la pena una expedición" {
+    assert.that(expedicion2.valeLaPena())
+  }
+  
+  test "Realizar expedición" {
+    expedicion2.invadirTierras()
+    assert.equals(18, ragnar.oro())
+  }
+  
+  // RESPUESTA PUNTO 4
+  // En caso de agregar castillos como nuevo objetivo, se puede agregar sin modificar.
+  // Deberia de compartir la misma INTERFAZ con las Aldeas y Capitales, o
+  // sea entender los mensajes de: valeLaPena() y serInvadido().
+  test "Un vikingo escala socialmente" {
+    ragnar.escalarSocialmente()
+    assert.equals(thrall, ragnar.casta())
+  }
 }
