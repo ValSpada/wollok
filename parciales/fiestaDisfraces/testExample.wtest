@@ -1,0 +1,64 @@
+import src.personas.*
+import src.fiesta.*
+import src.disfraz.*
+import src.personalidad.*
+import src.opinionDisfraz.*
+
+describe "Parcial" {
+  const feli = new Persona(edad = 28, personalidad = taciturna, opinionDisfraz = pretencioso)
+  const fede = new Persona(edad = 35, personalidad = alegre, opinionDisfraz = caprichoso)
+  const ale = new Persona(edad = 26, personalidad = alegre, opinionDisfraz = numerologo13)
+  const dante = new Persona(edad = 21, personalidad = taciturna, opinionDisfraz = caprichoso)
+  const joaco = new Persona(edad = 24, personalidad = taciturna, opinionDisfraz = pretencioso)
+  const numerologo13 = new Numerologo(numero = 13)
+  const batman = new Personaje(valor = 10)
+  const seiya = new Personaje()
+  const spartano = new Personaje()
+  const fantasmal = new Personaje(valor = 10)
+  const zombie = new Personaje(valor = 10)
+  const disfrazBatman = new Disfraz(caracteristicas = #{gracioso, careta}, nombre = "batman", personaje = batman, dias = 25, nivelGracia = 10, persona = feli)
+  const disfrazSeiya = new Disfraz(caracteristicas = #{tobaras}, nombre = "seiya", dias = 3, persona = fede)
+  const disfrazSpartano = new Disfraz(caracteristicas = #{sexy}, nombre = "spartano", personaje = spartano, dias = 1, persona = ale, nivelGracia = 2)
+  const disfrazFantasmal = new Disfraz(caracteristicas = #{gracioso}, nombre = "fantasmal", personaje = fantasmal, dias = 20, persona = dante, nivelGracia = 20)
+  const disfrazZombie = new Disfraz(caracteristicas = #{gracioso}, nombre = "zombie", personaje = zombie, dias = 20, persona = joaco, nivelGracia = 20)
+  const fiesta = new Fiesta(asistentes = #{ale, fede})
+  const fiesta2 = new Fiesta(asistentes = #{dante, feli})
+  const fiestaInolvidable = new Fiesta(asistentes = #{joaco, feli})
+  
+  method initialize() {
+    feli.disfraz(disfrazBatman)
+    fede.disfraz(disfrazSeiya)
+    ale.disfraz(disfrazSpartano)
+    dante.disfraz(disfrazFantasmal)
+    joaco.disfraz(disfrazZombie)
+  }
+  
+  test "1. Determinar el puntaje de un disfraz" {
+    assert.equals(20, disfrazBatman.puntaje())
+  }
+  
+  test "2. Una fiesta es un bodrio" {
+    assert.that(fiesta.esUnBodrio())
+  }
+  
+  test "3. Mejor disfraz de la fiesta" {
+    assert.equals(disfrazSeiya, fiesta.mejorDisfraz())
+  }
+  
+  test "4. Dos personas no pueden intercambiar trajes" {
+    assert.notThat(fiesta.puedenIntercambiarDisfraz(ale, fede))
+  }
+  
+  test "4. Dos persona pueden intercambiar trajes" {
+    assert.that(fiesta2.puedenIntercambiarDisfraz(feli, dante))
+  }
+  
+  test "5. Agregamos un asistene a la fiesta" {
+    fiesta.agregarAsistente(feli)
+    assert.equals(#{ale, fede, feli}, fiesta.asistentes())
+  }
+  
+  test "6. Una fiesta es inolvidable" {
+    assert.that(fiestaInolvidable.fiestaInolvidable())
+  }
+}
