@@ -1,0 +1,36 @@
+import src.guerrero.*
+import src.traje.*
+
+describe "Parcial" {
+    const goku = new Guerrero(potencialOfensivo = 100, energia = 5000, energiaOriginal = 5000, experiencia = 0, traje = trajeGoku)
+    const vegeta = new Guerrero(potencialOfensivo = 100, energia = 5000, energiaOriginal = 5000, experiencia = 0, traje = trajeSaiyan)
+
+    const trajeSaiyan = new TrajeComun(porcentajeProteccion = 0.03)
+    const trajeGoku = new TrajeEntrenamiento()
+    const trajeFreezer = new trajeModularizado(piezas = [piezaTorso, piezaPiernas])
+
+    const piezaTorso = new Pieza(porcentajeResistencia = 0.01)
+    const piezaPiernas = new Pieza(porcentajeResistencia = 0.04)
+
+    test "1. Dos guerreros pelean (sumando el punto 2, un guerrero recibe el ataque con traje comun)" {
+        goku.atacar(vegeta)
+        assert.equals(4993, vegeta.energia())
+    }
+
+    test "2. Dos guerreros pelean y un guerrero recibe ataque con traje de entrenamiento"{
+        vegeta.atacar(goku)
+        assert.equals(2, goku.experiencia())
+    }
+
+    test "3. Un guerrero pierde su traje" {
+        goku.perderTraje(trajeBase)
+        assert.equals(trajeBase, goku.traje())
+    }
+
+    test "4. Un guerrero recibe un ataque con traje modularizado" {
+        vegeta.traje(trajeFreezer)
+        goku.atacar(vegeta)
+        assert.equals(4995, vegeta.energia())
+    }
+
+}
