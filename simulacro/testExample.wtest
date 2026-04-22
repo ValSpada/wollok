@@ -1,0 +1,51 @@
+import src.filosofo.*
+import src.actividades.*
+import src.discusion.*
+import src.argumentos.*
+
+describe "Parcial" {
+  const confucio = new Filosofo(
+    nombre = "Confucio",
+    honorificos = #{"el sabio", "maestro"},
+    nivelIluminacion = 2000,
+    diasVividos = 364,
+    anios = 60,
+    actividades = [jungarseConDiogenes, tomarVino, practicarWaterpolo, meditarCascadaTermopilas, admirarPaisaje]
+  )
+  const diogenes = new Filosofo(nombre = "Diogenes", honorificos = #{"el cinico"}, nivelIluminacion = 1500, diasVividos = 10, anios = 30, actividades = [])
+  const jungarseConDiogenes = new JuntarseEnElAgora(filosofoCitado = diogenes)
+  const meditarCascadaTermopilas = new MeditarBajoUnaCascada(metros = 1)
+  const argumentoVida = new Argumento(naturalezas = [estoica, esceptica], descripcion = "La vida es un lenteja, la tomas o la dejas ?")
+  const argumentoFalopa = new Argumento(naturalezas = [estoica], descripcion = "Falopa")
+  const partidoHippie = new Partido(filosofo = confucio, argumentos = #{argumentoVida})
+  const partidoFalopa = new Partido(filosofo = diogenes, argumentos = #{argumentoFalopa})
+  const discusion = new Discusion(partido1 = partidoHippie, partido2 = partidoFalopa)
+  const feli = new FilosofoContemporaneo(nombre = "Felipe", nivelIluminacion = 1000000, diasVividos = 0, anios = 28, actividades = [admirarPaisaje])
+  
+  test "Punto 1 - Un filosofo se presenta" {
+    assert.equals("el sabio,maestro Confucio", confucio.presentarse())
+  }
+  
+  test "Punto 2 - Un filosofo esta en lo correcto" {
+    assert.that(confucio.estaEnLoCorrecto())
+  }
+  
+  test "Punto 3 - Hacer que un filosofo viva un día" {
+    confucio.vivirUnDia()
+    assert.equals(2150, confucio.nivelIluminacion())
+    assert.equals(361, confucio.diasVividos())
+  }
+  
+  test "Punto 4 - Un argumento es enriquecedor" {
+    assert.that(argumentoVida.esEnriquecedor())
+  }
+  
+  test "Punto 5 - Una discusión es buena" {
+    assert.that(discusion.esBuena())
+  }
+  
+  test "Punto 6 - Un filosofo contemporaneo se presenta y dice su nivel de iluminacion amando admirar el paisaje" {
+    assert.equals("hola", feli.presentarse())
+    assert.equals(5000000, feli.nivelIluminacion())
+  }
+}
